@@ -114,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updateClock(params) {
       const time = getTime(endtime);
-      console.log(time);
       days.innerHTML = getZero(time.days);
       hours.innerHTML = getZero(time.hours);
       seconds.innerHTML = getZero(time.seconds);
@@ -125,4 +124,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   setClock(".timer", deadline);
+  const slides = document.querySelectorAll(".offer__slide"),
+    prev = document.querySelector(".offer__slider-prev"),
+    next = document.querySelector(".offer__slider-next"),
+    current = document.querySelector("#current"),
+    total = document.querySelector("#total");
+  let slideIndex = 1;
+  show(slideIndex);
+  function show(j = 1) {
+    if (j > slides.length) {
+      slideIndex = 1;
+    }
+    if (j < 1) {
+      slideIndex = slides.length;
+    }
+    slides.forEach((item) => {
+      item.style.display = "none";
+    });
+    slides[slideIndex - 1].style.display = "block";
+    if (slides.length < 10) {
+      current.textContent = "0" + slideIndex;
+    } else {
+      current.textContent = slideIndex;
+    }
+  }
+  function sliderPlus(i) {
+    show((slideIndex += i));
+  }
+
+  next.addEventListener("click", () => {
+    sliderPlus(1);
+  });
+
+  prev.addEventListener("click", () => {
+    sliderPlus(-1);
+  });
 });
