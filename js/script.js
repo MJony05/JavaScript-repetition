@@ -78,4 +78,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
   window.addEventListener("scroll", showMyModalByScroll);
+
+  // DATA
+  const deadline = "2022-6-22";
+  const getTime = function (endtime) {
+    const total = Date.parse(endtime) - Date.parse(new Date()),
+      days = Math.floor(total / (1000 * 60 * 60 * 24)),
+      seconds = Math.floor((total / 1000) % 60),
+      minutes = Math.floor((total / 1000 / 60) % 60),
+      hours = Math.floor((total / 1000 / 60 / 60) % 24);
+    return {
+      total: total,
+      days: days,
+      seconds: seconds,
+      minutes: minutes,
+      hours: hours,
+    };
+  };
+
+  function getZero(num) {
+    if (num >= 0 && num < 10) {
+      return "0" + num;
+    } else {
+      return num;
+    }
+  }
+  function setClock(selector, endtime) {
+    const timer = document.querySelector(selector),
+      days = timer.querySelector("#days"),
+      minutes = timer.querySelector("#minutes"),
+      hours = timer.querySelector("#hours"),
+      seconds = timer.querySelector("#seconds"),
+      timeInterval = setInterval(updateClock, 1000);
+    updateClock();
+
+    function updateClock(params) {
+      const time = getTime(endtime);
+      console.log(time);
+      days.innerHTML = getZero(time.days);
+      hours.innerHTML = getZero(time.hours);
+      seconds.innerHTML = getZero(time.seconds);
+      minutes.innerHTML = getZero(time.minutes);
+      if (time.total <= 0) {
+        clearInterval(timeInterval);
+      }
+    }
+  }
+  setClock(".timer", deadline);
 });
